@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex,follow" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Parabot Lenong Paguyuban</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container text-left p-4">
+            <h2 class="m-0 float-start">Parabot Lenong Paguyuban</h2>
+            <div class="float-end">
+            <a href="index.html" class="btn btn-outline-dark">back</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <hr class="m-0">
+        <div class="container pt-4">    
+            <h3>Slug Generator Bulk</h3>
+            <p>for multiple lines</p>
+            <p>&nbsp;</p>
+            <label for="prefixInput" class="form-label">Prefix (slugified, ends with "-"):</label>
+            <input type="text" id="prefixInput" class="form-control" placeholder="e.g. blog">
+
+            <label for="textInput" class="form-label">Main Text:</label>
+          <textarea id="textInput" class="form-control" placeholder="Type or paste multiple lines..."></textarea>
+
+            <label for="suffixInput" class="form-label">Suffix (keeps special characters):</label>
+            <input type="text" id="suffixInput" class="form-control" placeholder="e.g. _v2#final">
+
+            <button id="generateBtn" class="btn btn-outline-dark mt-4">Generate & Copy</button>
+            <div class="mt-2">
+                <label for="noDashOutput">Results:</label>
+                <textarea id="slugOutput" class="form-control" rows="5"></textarea>
+            </div>
+        </div>
+    </div>
+
+  
+
+
+    <script>
+    function generateSlug(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '')  // Remove non-alphanumerics except space
+        .trim()
+        .replace(/\s+/g, '-');        // Replace spaces with hyphens
+    }
+
+    function buildSlug(prefix, slugMain, suffix) {
+      return prefix + (slugMain ? '' + slugMain : '') + suffix;
+    }
+
+    const prefixInput = document.getElementById('prefixInput');
+    const textInput = document.getElementById('textInput');
+    const suffixInput = document.getElementById('suffixInput');
+    const slugOutput = document.getElementById('slugOutput');
+    const generateBtn = document.getElementById('generateBtn');
+
+    generateBtn.addEventListener('click', () => {
+      const prefix = prefixInput.value || '';
+      const suffix = suffixInput.value || '';
+      const lines = textInput.value.split('\n').filter(line => line.trim() !== '');
+
+      let output = '';
+
+      lines.forEach((line, index) => {
+        const original = line.trim();
+        const slugOnly = generateSlug(original);
+        const withPrefixSuffix = buildSlug(prefix, slugOnly, suffix);
+        const noDash = withPrefixSuffix.replace(/-/g, '');
+
+        output += `${original}\n${slugOnly}\n${withPrefixSuffix}\n${noDash}\n\n`;
+      });
+
+      slugOutput.textContent = output.trim();
+
+      // Copy first full slug with prefix/suffix to clipboard
+      if (lines.length > 0) {
+        const firstSlug = buildSlug(prefix, generateSlug(lines[0]), suffix);
+        navigator.clipboard.writeText(firstSlug)
+          .then(() => alert('First full slug copied to clipboard!'))
+          .catch(err => alert('Failed to copy: ' + err));
+      }
+    });
+  </script>
+
+
+</body>
+</html>

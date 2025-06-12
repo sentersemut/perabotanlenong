@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex,follow" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Parabot Lenong Paguyuban</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container text-left p-4">
+            <h2 class="m-0 float-start">Parabot Lenong Paguyuban</h2>
+            <div class="float-end">
+            <a href="index.html" class="btn btn-outline-dark">back</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <hr class="m-0">
+        <div class="container pt-4">
+            <h3>Excel Table to JSON</h3>
+            <textarea class="form-control mb-3" id="excel-input" placeholder="Paste copied Excel data here..."></textarea>
+            <button class="btn btn-outline-dark mb-4" onclick="convertToJSON()">Convert to JSON</button>
+            <p><strong>JSON Result:</strong></p>
+            <pre id="json-output"></pre>
+        </div>
+    </div>
+
+  <script>
+    function convertToJSON() {
+      const input = document.getElementById('excel-input').value.trim();
+      const lines = input.split(/\r?\n/);
+
+      if (lines.length < 2) {
+        document.getElementById('json-output').textContent = 'Not enough data.';
+        return;
+      }
+
+      const headers = lines[0].split('\t');
+      const data = lines.slice(1).map(line => {
+        const cells = line.split('\t');
+        const obj = {};
+        headers.forEach((header, i) => {
+          obj[header.trim()] = cells[i]?.trim() || "";
+        });
+        return obj;
+      });
+
+      document.getElementById('json-output').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+
+
+</body>
+</html>
+
+
+
+
+

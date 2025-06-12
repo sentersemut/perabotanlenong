@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex,follow" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Parabot Lenong Paguyuban</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container text-left p-4">
+            <h2 class="m-0 float-start">Parabot Lenong Paguyuban</h2>
+            <div class="float-end">
+            <a href="index.html" class="btn btn-outline-dark">back</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <hr class="m-0">
+        <div class="container pt-4">
+            <h3>Unclosed Tag Finder</h3>
+            <textarea id="htmlInput" class="form-control" rows="15" cols="80" placeholder="Paste your HTML code here"></textarea><br>
+            <button class="btn btn-outline-dark" onclick="findUnclosedTags()">Check for Unclosed Tags</button>
+            <div class="mt-3 mb-3">
+                <pre id="result"></pre>
+            </div>
+
+        </div>
+    </div>
+
+  
+
+
+  <script>
+    function findUnclosedTags() {
+      const input = document.getElementById("htmlInput").value;
+      const result = document.getElementById("result");
+      result.textContent = "";
+
+      const voidTags = new Set([
+        'area', 'base', 'br', 'col', 'embed', 'hr', 'img',
+        'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'
+      ]);
+
+      // Create a mapping from character index to line number
+      const lineMap = [];
+      let line = 1;
+      for (let i = 0; i < input.length; i++) {
+        lineMap[i] = line;
+        if (input[i] === '\n') line++;
+      }
+
+      const tagStack = [];
+      const tagRegex = /<\s*(\/?)\s*([a-zA-Z0-9\-]+)[^>]*?>/g;
+      let match;
+
+      while ((match = tagRegex.exec(input)) !== null) {
+        const [fullMatch, slash, tagName] = match;
+        const tag = tagName.toLowerCase();
+        const charIndex = match.index;
+        const lineNumber = lineMap[charIndex] || 1;
+
+        if (voidTags.has(tag)) continue;
+
+        if (!slash) {
+          tagStack.push({ tag, line: lineNumber });
+        } else {
+          let found = false;
+          for (let i = tagStack.length - 1; i >= 0; i--) {
+            if (tagStack[i].tag === tag) {
+              tagStack.splice(i, 1);
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            result.textContent += `⛔️ Unmatched closing tag </${tag}> at line ${lineNumber}\n`;
+          }
+        }
+      }
+
+      if (tagStack.length > 0) {
+        tagStack.forEach(({ tag, line }) => {
+          result.textContent += `⛔️ Unclosed tag <${tag}> starting at line ${line}\n`;
+        });
+      }
+
+      if (result.textContent === "") {
+        result.textContent = "✅ No unclosed tags found!";
+      }
+    }
+  </script>
+
+
+</body>
+</html>
+
+
+  
