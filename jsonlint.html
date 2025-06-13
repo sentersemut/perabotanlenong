@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex,follow" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Parabot Lenong Paguyuban</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container text-left p-4">
+            <h2 class="m-0 float-start">Parabot Lenong Paguyuban</h2>
+            <div class="float-end">
+            <a href="index.html" class="btn btn-outline-dark">back</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <hr class="m-0">
+        <div class="container pt-4">
+            <h3>Simple JSON Lint & Hint</h3>
+            <p><small class="font-size:8px;">❗️ Only capable to validate basic hints like missing commas, colons, or quotes</small></p>
+            <textarea id="jsonInput" class="form-control" rows="10" placeholder="Paste your JSON here..."></textarea>
+            <br>
+            <button onclick="validateJSON()" class="btn btn-outline-dark">Validate</button>
+
+            <p><strong>Results:</strong></p>
+            <pre id="output"></pre>
+        </div>
+    </div>
+
+  
+<script>
+function jsonLint(jsonStr) {
+  try {
+    JSON.parse(jsonStr);
+    return { valid: true };
+  } catch (e) {
+    const message = e.message;
+    const match = message.match(/at position (\d+)/);
+    if (match) {
+      const position = parseInt(match[1], 10);
+      const lines = jsonStr.slice(0, position).split('\n');
+      return {
+        valid: false,
+        error: message,
+        line: lines.length,
+        column: position - jsonStr.lastIndexOf('\n', position - 1),
+      };
+    } else {
+      return { valid: false, error: message };
+    }
+  }
+}
+
+function jsonHint(jsonStr) {
+  const hints = [];
+  const lines = jsonStr.split('\n');
+
+  lines.forEach((line, idx) => {
+    const trimmed = line.trim();
+
+    // Unquoted keys
+    const match = trimmed.match(/^([a-zA-Z0-9_]+)\s*:/);
+    if (match) {
+      hints.push({
+        line: idx + 1,
+        hint: `Unquoted key "${match[1]}" — keys should be in double quotes.`
+      });
+    }
+
+    // Trailing commas
+    if (trimmed.endsWith(',') && lines[idx + 1]?.trim().startsWith('}')) {
+      hints.push({
+        line: idx + 1,
+        hint: 'Trailing comma before closing brace might cause issues.'
+      });
+    }
+
+    // Single quotes
+    if (line.includes("'")) {
+      hints.push({
+        line: idx + 1,
+        hint: 'Single quotes detected — JSON strings must use double quotes.'
+      });
+    }
+
+    // Colon misuse
+    if (trimmed.includes(':') && !trimmed.includes('":')) {
+      if (!/^".*"\s*:/.test(trimmed)) {
+        hints.push({
+          line: idx + 1,
+          hint: 'Possible missing quotes around key or incorrect colon usage.'
+        });
+      }
+    }
+  });
+
+  return hints;
+}
+
+function validateJSON() {
+  const input = document.getElementById('jsonInput').value;
+  const output = document.getElementById('output');
+  output.innerHTML = ''; // Clear previous
+
+  const lint = jsonLint(input);
+  if (lint.valid) {
+    output.innerHTML += '<span class="success">✅ JSON is valid.</span>\n';
+  } else {
+    output.innerHTML += `<span class="error">❌ Invalid JSON:</span>\n`;
+    output.innerHTML += `Line ${lint.line}, Column ${lint.column}: ${lint.error}\n\n`;
+  }
+
+  const hints = jsonHint(input);
+  if (hints.length > 0) {
+    output.innerHTML += '<strong>Hints:</strong>\n';
+    hints.forEach(hint => {
+      output.innerHTML += `Line ${hint.line}: ${hint.hint}\n`;
+    });
+  } else {
+    output.innerHTML += 'No hints or common issues detected.';
+  }
+}
+</script>
+
+
+
+
+</body>
+</html>
