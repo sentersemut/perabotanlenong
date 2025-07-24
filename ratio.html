@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex,follow" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Parabot Lenong Paguyuban</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <div class="container text-left p-4">
+            <h2 class="m-0 float-start">Parabot Lenong Paguyuban</h2>
+            <div class="float-end">
+            <a href="index.html" class="btn btn-outline-dark">back</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <hr class="m-0">
+        <div class="container pt-4">
+            <h3>Ratio Calculator</h3>
+            <div class="row">
+                <div class="col-md-3 col-xs-6">
+                    <label for="numA" class="form-label">Number A: </label>
+                    <input type="text" id="numA" class="form-control" placeholder="">
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <label for="numB" class="form-label">Number B: </label>
+                    <input type="text" id="numB" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3 col-xs-6">
+                    <div id="resultText">Ratio: —</div>
+                </div>
+            </div>
+            <hr class="mt-5 mb-5">
+            <div class="row">
+                <div class="col-md-3 col-xs-6">
+                    <label for="resA" class="form-label">Result A: </label>
+                    <input type="text" id="resA" class="form-control" placeholder="">
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <label for="resB" class="form-label">Result B: </label>
+                    <input type="text" id="resB" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3 col-xs-6">
+                    <div id="calcDetails">Calculation: —</div>
+                </div>
+            </div>  
+        </div>
+    </div>
+<script>
+    function gcd(a, b) {
+        return b ? gcd(b, a % b) : a;
+    }
+
+    var ratioA = null, ratioB = null;
+
+    function updateRatio() {
+        var a = parseFloat(document.getElementById('numA').value);
+        var b = parseFloat(document.getElementById('numB').value);
+        var resultText = document.getElementById('resultText');
+        var calcDetails = document.getElementById('calcDetails');
+
+        if (isNaN(a) || isNaN(b) || b === 0) {
+        resultText.innerText = 'Ratio: —';
+        calcDetails.innerText = 'Calculation: —';
+        ratioA = ratioB = null;
+        return;
+        }
+
+        var divisor = gcd(a, b);
+        ratioA = a / divisor;
+        ratioB = b / divisor;
+
+        resultText.innerText = 'Ratio: ' + ratioA + ' : ' + ratioB;
+        calcDetails.innerText = 'Calculation: —';
+        updateResults(); // auto update results
+    }
+
+    function updateResults(triggeredBy) {
+        var resA = document.getElementById('resA');
+        var resB = document.getElementById('resB');
+        var calcDetails = document.getElementById('calcDetails');
+
+        if (ratioA == null || ratioB == null) return;
+
+        var valA = parseFloat(resA.value);
+        var valB = parseFloat(resB.value);
+
+        if (triggeredBy === 'resA' && !isNaN(valA)) {
+        var calculatedB = (valA / ratioA) * ratioB;
+        resB.value = calculatedB.toFixed(2);
+        calcDetails.innerText = 'Calculation: B = (' + valA.toFixed(2) + ' / ' + ratioA + ') × ' + ratioB + ' = ' + calculatedB.toFixed(2);
+        } else if (triggeredBy === 'resB' && !isNaN(valB)) {
+        var calculatedA = (valB / ratioB) * ratioA;
+        resA.value = calculatedA.toFixed(2);
+        calcDetails.innerText = 'Calculation: A = (' + valB.toFixed(2) + ' / ' + ratioB + ') × ' + ratioA + ' = ' + calculatedA.toFixed(2);
+        }
+    }
+
+    // Listen for ratio inputs
+    var inputs = document.querySelectorAll('#numA, #numB');
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('keyup', updateRatio);
+        inputs[i].addEventListener('keydown', updateRatio); // fallback
+    }
+
+    // Listen for result changes
+    document.getElementById('resA').addEventListener('keyup', function() {
+        updateResults('resA');
+    });
+    document.getElementById('resB').addEventListener('keyup', function() {
+        updateResults('resB');
+    });
+    document.getElementById('resA').addEventListener('keydown', function() {
+        updateResults('resA');
+    });
+    document.getElementById('resB').addEventListener('keydown', function() {
+        updateResults('resB');
+    });
+</script>
+</body>
+</html>
