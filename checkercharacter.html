@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex,follow" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Parabot Lenong Paguyuban</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container text-left p-4">
+            <h2 class="m-0 float-start">Parabot Lenong Paguyuban</h2>
+            <div class="float-end">
+            <a href="index.html" class="btn btn-outline-dark">back</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <hr class="m-0">
+        <div class="container pt-4">
+            <h3>Special Character Checker</h3>
+
+            <textarea id="inputText" class="form-control" rows="10" placeholder="check your text here..."></textarea>
+
+            <div class="mb-3 mt-3">
+                <label><input type="checkbox" id="allowAlpha" checked> Allow Alphabet (A-Z, a-z)</label><br>
+                <label><input type="checkbox" id="allowNum" checked> Allow Numeric (0-9)</label><br>
+                <label><input type="checkbox" id="allowSelected" checked> Allow Selected Characters (, . ! ? ' " )</label><br>
+                <label><input type="checkbox" id="allowLatinExt"> Allow Latin Extended (é, ñ, ü, dll)</label><br>
+                <label><input type="checkbox" id="allowCJK"> Allow Mandarin/Japanese/Korean (汉字, かな, カナ, 한글)</label><br>
+                <label><input type="checkbox" id="allowArabic"> Allow Arabic (العربية)</label>
+            </div>
+
+            <button id="checkBtn" class="btn btn-outline-dark mb-3">Check</button>
+            
+            <p><strong>Results:</strong></p>
+            <div class="results" id="results" class="mb-3 mt-1"></div>
+
+        </div>
+    </div>
+
+
+
+  
+  <script>
+    document.getElementById("checkBtn").addEventListener("click", () => {
+      const text = document.getElementById("inputText").value;
+      const lines = text.split("\n");
+
+      const allowAlpha = document.getElementById("allowAlpha").checked;
+      const allowNum = document.getElementById("allowNum").checked;
+      const allowSelected = document.getElementById("allowSelected").checked;
+      const allowLatinExt = document.getElementById("allowLatinExt").checked;
+      const allowCJK = document.getElementById("allowCJK").checked;
+      const allowArabic = document.getElementById("allowArabic").checked;
+
+      // Build regex pattern dynamically
+      let allowed = "";
+      if (allowAlpha) allowed += "a-zA-Z";
+      if (allowNum) allowed += "0-9";
+      if (allowSelected) allowed += ",\\.\\!\\?\\'\\\"";
+      if (allowLatinExt) allowed += "\\u00C0-\\u024F"; // Latin Extended
+      if (allowCJK) allowed += "\\u4E00-\\u9FFF\\u3040-\\u309F\\u30A0-\\u30FF\\uAC00-\\uD7AF"; // Chinese/Japanese/Korean
+      if (allowArabic) allowed += "\\u0600-\\u06FF"; // Arabic
+
+      const regex = new RegExp(`[^${allowed}\\s]`, "g"); // anything NOT allowed + not whitespace
+      
+      let results = "";
+      lines.forEach((line, idx) => {
+        const matches = line.match(regex);
+        if (matches) {
+          results += `Line ${idx + 1}: ❌ Found [ ${matches.join(" ")} ]\n`;
+        } else {
+          results += `Line ${idx + 1}: ✅ No invalid characters\n`;
+        }
+      });
+
+      document.getElementById("results").innerText = results;
+    });
+  </script>
+
+
+
+
+
+</body>
+</html>
