@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex,follow" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>Parabot Lenong Paguyuban</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container text-left p-4">
+            <h2 class="m-0 float-start">Parabot Lenong Paguyuban</h2>
+            <div class="float-end">
+            <a href="index.html" class="btn btn-outline-dark">back</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+  <div class="container py-5">
+    <h3 class="mb-4 text-center">Google Schema JSON-LD Generator</h3>
+
+    <div class="mb-3">
+      <label for="schemaType" class="form-label fw-bold">Pilih Schema Type:</label>
+      <select id="schemaType" class="form-select">
+        <option value="">-- Pilih Schema --</option>
+        <option value="Article">Article</option>
+        <option value="NewsArticle">NewsArticle</option>
+        <option value="BlogPosting">BlogPosting</option>
+        <option value="FAQPage">FAQPage</option>
+        <option value="HowTo">HowTo</option>
+        <option value="Product">Product</option>
+        <option value="LocalBusiness">LocalBusiness</option>
+        <option value="Organization">Organization</option>
+        <option value="Website">Website</option>
+        <option value="BreadcrumbList">BreadcrumbList</option>
+        <option value="Event">Event</option>
+        <option value="Recipe">Recipe</option>
+        <option value="VideoObject">VideoObject</option>
+      </select>
+    </div>
+
+    <form id="schemaFields" class="mb-3"></form>
+
+    <div class="d-flex gap-2 mb-3">
+      <button type="button" class="btn  btn-outline-dark" onclick="addCustomField()">+ Custom Field</button>
+      <button type="button" class="btn  btn-outline-dark" onclick="fillExample()">Auto-fill Contoh</button>
+      <button type="button" class="btn  btn-outline-dark" onclick="generateJSON()">Generate JSON-LD</button>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold">Generated JSON-LD:</label>
+      <textarea id="output" class="form-control" rows="10" readonly></textarea>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-success" onclick="copyJSON()">Copy</button>
+      <button class="btn btn-info" onclick="downloadJSON()">Download .json</button>
+      <button class="btn btn-dark" onclick="validateJSON()">Validate (basic)</button>
+    </div>
+  </div>
+</div>
+  <script>
+    const schemaDefinitions = {
+      "Article": ["headline", "author", "datePublished", "publisher", "mainEntityOfPage"],
+      "Product": ["name", "image", "description", "sku", "brand", "offers"],
+      "FAQPage": ["mainEntity"]
+      // Tambahkan schema lain sesuai kebutuhan
+    };
+
+    const schemaTypeSelect = document.getElementById("schemaType");
+    const schemaFieldsDiv = document.getElementById("schemaFields");
+    const output = document.getElementById("output");
+
+    schemaTypeSelect.addEventListener("change", () => {
+      schemaFieldsDiv.innerHTML = "";
+      const type = schemaTypeSelect.value;
+      if (type && schemaDefinitions[type]) {
+        schemaDefinitions[type].forEach(field => {
+          schemaFieldsDiv.innerHTML += `
+            <div class="mb-3">
+              <label class="form-label">${field}</label>
+              <input type="text" class="form-control" id="${field}" placeholder="Enter ${field}">
+            </div>`;
+        });
+      }
+    });
+
+    function addCustomField() {
+      const fieldName = prompt("Masukkan nama custom field:");
+      if (fieldName) {
+        schemaFieldsDiv.innerHTML += `
+          <div class="mb-3">
+            <label class="form-label">${fieldName}</label>
+            <input type="text" class="form-control" id="${fieldName}" placeholder="Enter ${fieldName}">
+          </div>`;
+      }
+    }
+
+    function fillExample() {
+      document.querySelectorAll("#schemaFields input").forEach(input => {
+        input.value = "Contoh " + input.id;
+      });
+    }
+
+    function generateJSON() {
+      const type = schemaTypeSelect.value;
+      if (!type) return alert("Pilih schema type dulu!");
+
+      let schemaObj = {
+        "@context": "https://schema.org",
+        "@type": type
+      };
+
+      document.querySelectorAll("#schemaFields input").forEach(input => {
+        if (input.value.trim() !== "") {
+          schemaObj[input.id] = input.value.trim();
+        }
+      });
+
+      output.value = JSON.stringify(schemaObj, null, 2);
+    }
+
+    function copyJSON() {
+      output.select();
+      document.execCommand("copy");
+      alert("Copied to clipboard!");
+    }
+
+    function downloadJSON() {
+      const blob = new Blob([output.value], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "schema.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function validateJSON() {
+      try {
+        JSON.parse(output.value);
+        alert("Valid JSON!");
+      } catch (e) {
+        alert("Invalid JSON: " + e.message);
+      }
+    }
+  </script>
+</body>
+</html>
