@@ -1,0 +1,154 @@
+{
+  "makanan-id": [
+    {
+      "keyword": "default",
+      "title": "Rendang Sapi Gurih",
+      "description": "Masakan daging sapi tradisional dengan bumbu rempah pilihan.",
+      "link": "example.com/makanan-id/rendang"
+    },
+    {
+      "keyword": "Soto",
+      "title": "Soto Ayam Lamongan",
+      "description": "Soto dengan kuah kuning dan taburan koya gurih.",
+      "link": "example.com/makanan-id/soto-ayam"
+    },
+    {
+      "keyword": "Soto",
+      "title": "Soto Betawi Kuah Susu",
+      "description": "Soto daging khas Jakarta dengan kuah santan dan susu yang kaya rasa.",
+      "link": "example.com/makanan-id/soto-betawi"
+    },
+    {
+      "keyword": "Sate",
+      "title": "Sate Madura Bumbu Kacang",
+      "description": "Sate ayam empuk dengan siraman bumbu kacang kental dan kecap manis.",
+      "link": "example.com/makanan-id/sate-madura"
+    },
+    {
+      "keyword": "Sate",
+      "title": "Sate Maranggi Cianjur",
+      "description": "Sate daging sapi premium dengan bumbu rendaman rempah yang meresap.",
+      "link": "example.com/makanan-id/sate-maranggi"
+    },
+    {
+      "keyword": "Nasi",
+      "title": "Nasi Goreng Spesial",
+      "description": "Nasi goreng dengan campuran telur, ayam, dan bakso yang dimasak ala rumahan.",
+      "link": "example.com/makanan-id/nasi-goreng"
+    }
+  ],
+  "makanan": [
+    {
+      "keyword": "default",
+      "title": "Authentic Beef Rendang",
+      "description": "Traditional slow-cooked beef in rich coconut milk and spices.",
+      "link": "example.com/makanan/rendang"
+    },
+    {
+      "keyword": "Soto",
+      "title": "Savory Chicken Soto",
+      "description": "Authentic yellow soup with aromatic herbs and shredded chicken.",
+      "link": "example.com/makanan/soto-chicken"
+    },
+    {
+      "keyword": "Soto",
+      "title": "Jakarta Beef Soto",
+      "description": "Traditional beef soup with a creamy coconut and milk broth.",
+      "link": "example.com/makanan/soto-jakarta"
+    },
+    {
+      "keyword": "Sate",
+      "title": "Madura Style Chicken Satay",
+      "description": "Grilled chicken skewers served with thick, savory peanut sauce.",
+      "link": "example.com/makanan/chicken-satay"
+    },
+    {
+      "keyword": "Sate",
+      "title": "Maranggi Beef Satay",
+      "description": "Tender beef skewers marinated in traditional spices and herbs.",
+      "link": "example.com/makanan/beef-maranggi"
+    },
+    {
+      "keyword": "Nasi",
+      "title": "Special Fried Rice",
+      "description": "Indonesian classic fried rice with chicken, egg, and crackers.",
+      "link": "example.com/makanan/fried-rice"
+    }
+  ],
+  "minuman-id": [
+    {
+      "keyword": "default",
+      "title": "Es Cendol Manis",
+      "description": "Minuman segar dengan gula merah, santan, dan pandan.",
+      "link": "example.com/minuman-id/cendol"
+    },
+    {
+      "keyword": "Kopi",
+      "title": "Kopi Susu Gula Aren",
+      "description": "Perpaduan espresso, susu segar, dan manisnya gula aren.",
+      "link": "example.com/minuman-id/kopi-aren"
+    },
+    {
+      "keyword": "Kopi",
+      "title": "Kopi Tubruk Hitam",
+      "description": "Kopi hitam murni tanpa ampas dengan aroma yang kuat.",
+      "link": "example.com/minuman-id/kopi-tubruk"
+    },
+    {
+      "keyword": "Teh",
+      "title": "Teh Tarik Hangat",
+      "description": "Minuman teh campur susu yang ditarik hingga berbuih halus.",
+      "link": "example.com/minuman-id/teh-tarik"
+    },
+    {
+      "keyword": "Teh",
+      "title": "Es Teh Manis Melati",
+      "description": "Teh melati dingin yang menyegarkan dahaga.",
+      "link": "example.com/minuman-id/es-teh"
+    },
+    {
+      "keyword": "Jus",
+      "title": "Jus Alpukat Cokelat",
+      "description": "Jus alpukat kental dengan siraman susu kental manis cokelat.",
+      "link": "example.com/minuman-id/jus-alpukat"
+    }
+  ],
+  "minuman": [
+    {
+      "keyword": "default",
+      "title": "Sweet Iced Cendol",
+      "description": "Refreshing traditional drink with brown sugar and coconut milk.",
+      "link": "example.com/minuman/cendol"
+    },
+    {
+      "keyword": "Kopi",
+      "title": "Palm Sugar Coffee Latte",
+      "description": "A perfect blend of espresso, fresh milk, and authentic palm sugar.",
+      "link": "example.com/minuman/palm-sugar-coffee"
+    },
+    {
+      "keyword": "Kopi",
+      "title": "Black Coffee Tubruk",
+      "description": "Strong and pure Indonesian black coffee brewed traditionally.",
+      "link": "example.com/minuman/black-coffee"
+    },
+    {
+      "keyword": "Teh",
+      "title": "Hot Teh Tarik",
+      "description": "Classic pulled tea with milk, smooth and frothy.",
+      "link": "example.com/minuman/teh-tarik"
+    },
+    {
+      "keyword": "Teh",
+      "title": "Jasmine Iced Tea",
+      "description": "Chilled jasmine tea, perfect for a refreshing break.",
+      "link": "example.com/minuman/iced-tea"
+    },
+    {
+      "keyword": "Jus",
+      "title": "Avocado Chocolate Juice",
+      "description": "Thick avocado juice drizzled with chocolate condensed milk.",
+      "link": "example.com/minuman/avocado-juice"
+    }
+  ]
+}
